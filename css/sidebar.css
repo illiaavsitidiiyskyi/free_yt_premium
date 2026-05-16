@@ -33,4 +33,56 @@
     user-select: none;
 }
 
-.nav-item:
+.nav-item:hover {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.nav-item:hover {
+    background: var(--surface2);
+    color: var(--text);
+
+}
+
+.nav-item.active {
+    background: var(--surface2);
+    color: var(--text);
+    border-left: 2px solid var(--accent);
+    padding-left: 10px;
+}
+
+.nav-devider {
+    height: 1px;
+    background: var(--border);
+}
+
+.nav-section-titile {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 20px 4px;
+}
+
+
+.nav-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: white;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+}
