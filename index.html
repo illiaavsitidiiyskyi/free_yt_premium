@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>YTFREE</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/header.css">
+        <link rel="stylesheet" href="css/sidebar.css">
+        <link rel="stylesheet" href="css/feed.css">
+        <link rel="stylesheet" href="css/player.css">
+        <link rel="stylesheet" href="css/modal.css">
+    </head>
+    <body>
+
+
+        <header id="header">
+            <div class="logo">YTFREE</div>
+
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search or paste link...">
+                <button id="search-btn"></button>
+            </div>
+
+            <div class="header-action">
+                <button class="api-key-btn" id="api-key-btn"> API key</button>
+            </div>
+        </header>
+
+        <div class="layout">
+
+            <nav id="sidebar">
+                <ul class="nav-links">
+                    <li class="nav-item active" data-page="home">Home</li>
+                    <li class="nav-item" data-page="watchlater">Watch later</li>
+                    <li class="nav-item" data-page="history">Story</li>
+                </ul>
+            </nav>
+
+            <main id="main">
+                <div id="feed"></div>
+                <div id="player-view" class="hidden"></div>
+                <div id="watchlater-view" class="hidden"></div>
+            </main>
+        </div>
+
+
+        <div id="modal-overlay" class="modal-overlaty">
+            <div class="modal">
+                <h2>API Key</h2>
+                <p>
+                    Get a free key to
+                    <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a>
+                    -> YouTube Data API v3
+                </p>
+                <input type="text" id="api-key-input" placeholder="Insert the key here...">
+                <div class="modal-btns">
+                    <button class="btn-secondary" id="modal-cancel">Cancel</button>
+                    <button class="btn-primary" id="modal-save">Save</button>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="js/storage.js"></script>
+        <script src="js/urlparser.js"></script>
+        <script src="js/api.js"></script>
+        <script src="js/player.js"></script>
+        <script src="js/feed.js"></script>
+        <script src="js/search.js"></script>
+        <script src="js/watchlater.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+</html>

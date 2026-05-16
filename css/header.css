@@ -1,0 +1,104 @@
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: var(--header-height);
+    background: rgba(10, 10, 10, 0.97);
+    backdrop-filter: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+
+.logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    flex-shrink: 0;
+    user-select: none;
+    cursor: pointer;
+}
+
+.logo:hover {
+    opacity: 0.85;
+}
+
+.search-bar {
+    flex: 1;
+    max-width: 580px;
+    display: flex;
+}
+
+.search-bar input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: var(--radius) 0 0 var(--radius);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-bar input:focus {
+    border-color: var(--accent);
+}
+
+.search-bar input::placeholder {
+    color: var(--text3);
+}
+
+.search-bar button {
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 8px 18px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.search-bar button:hover {
+    background: #cc0000;
+}
+
+.header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.api-key-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.api-key-btn:hover {
+    border-color: var(--text2);
+    color: var(--text);
+}
+
+
+.api-key-btn.set {
+    border-color: #00cc66;
+    color: #00cc66;
+}
