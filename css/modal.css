@@ -1,99 +1,147 @@
+/* ── ОВЕРЛЕЙ ── */
 .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-overlay.open {
-    display: flex;
+  display: flex;
 }
 
+/* ── МОДАЛКА ── */
 .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 32px;
-    width: 480px;
-    max-width: 90vw;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 32px;
+  width: 480px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .modal h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 1px;
-    color: var(--text);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: var(--text);
 }
 
 .modal p {
-    color: var(--text2);
-    font-size: 13px;
-    line-height: 1.6;
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .modal p a {
-    color: var(--accent);
-    text-decoration: none;
+  color: var(--accent);
+  text-decoration: none;
 }
 
 .modal p a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
+/* ── ИНПУТ ── */
 .modal input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    padding: 10px 14px;
-    border-radius: var(--radius);
-    outline: none;
-    transition: border-color 0.2s;
-    margin-top: 4px;
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.2s;
+  margin-top: 4px;
 }
 
 .modal input:focus {
-    border-radius: var(--accent);
+  border-color: var(--accent);
 }
 
 .modal input::placeholder {
-    color: var(--text3);
+  color: var(--text3);
 }
 
-
+/* ── КНОПКИ ── */
 .modal-btns {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 8px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 8px;
 }
 
 .btn-primary {
-    background: var(--accent);
-    border: none;
-    color: white;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 24px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: background 0.2s;
+  background: var(--accent);
+  border: none;
+  color: white;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 24px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .btn-primary:hover {
-    background: #cc0000;
+  background: #cc0000;
 }
 
 .btn-secondary {
-    background: transparent;
-    border: 1px solid var(--border);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--text2);
+  color: var(--text);
+}
+
+/* ── УВЕДОМЛЕНИЕ ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  border-color: #00cc66;
+  color: #00cc66;
+}
+
+.toast.error {
+  border-color: var(--accent);
+  color: var(--accent);
 }
