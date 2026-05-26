@@ -32,7 +32,8 @@ const API = {
   const params = {
     part: 'snippet,contentDetails,statistics',
     chart: 'mostPopular',
-    regionCode: 'CZ',
+    regionCode: 'UA',
+    relevanceLanguage: 'uk',
     maxResults: 24,
     videoCategoryId: '0'
   };
