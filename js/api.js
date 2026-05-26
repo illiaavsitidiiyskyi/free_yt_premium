@@ -29,16 +29,16 @@ const API = {
   },
 
   async getTrending(pageToken = '') {
-    const params = {
-      part: 'snippet,contentDetails,statistics',
-      chart: 'mostPopular',
-      regionCode: 'CZ',
-      maxResults: 24,
-      videoCategoryId: '0'
-    };
-    if (pageToken) params.pageToken = pageToken;
-    return this.request('videos', params);
-  },
+  const params = {
+    part: 'snippet,contentDetails,statistics',
+    chart: 'mostPopular',
+    regionCode: 'CZ',
+    maxResults: 24,
+    videoCategoryId: '0'
+  };
+  if (pageToken) params.pageToken = pageToken;
+  return this.request('videos', params);
+},
 
   async search(query, pageToken = '') {
     const params = {
