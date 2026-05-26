@@ -3,10 +3,26 @@ const App = {
   init() {
     this.initHeader();
     this.initSidebar();
+    this.initBottomNav();
     this.initModal();
     Search.init();
     WatchLater.updateBadge();
     Feed.loadHome();
+  },
+
+  initBottomNav() {
+    document.querySelectorAll('.bottom-nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.bottom-nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        const page = item.dataset.page;
+        this.setActivePage(page);
+        if (page === 'home') Feed.loadHome();
+        else if (page === 'watchlater') WatchLater.show();
+        else if (page === 'history') this.showHistory();
+
+      });
+    });
   },
 
   initHeader() {
