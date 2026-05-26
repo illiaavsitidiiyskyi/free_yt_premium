@@ -29,27 +29,16 @@ const API = {
   },
 
   async getTrending(pageToken = '') {
-  const lang = navigator.language || 'en';
-  const langCode = lang.split('-')[0];
-
-  const regionMap = {
-    'uk': 'UA', 'ru': 'RU', 'cs': 'CZ',
-    'de': 'DE', 'pl': 'PL', 'en': 'US',
-    'fr': 'FR', 'es': 'ES', 'it': 'IT'
-  };
-
-  const region = regionMap[langCode] || 'US';
-
   const params = {
-    part: 'snippet,contentDetails,statistics',
-    chart: 'mostPopular',
-    regionCode: region,
-    relevanceLanguage: langCode,
+    part: 'snippet',
+    q: 'trending 2026',
+    type: 'video',
+    order: 'viewCount',
     maxResults: 24,
-    videoCategoryId: '0'
+    relevanceLanguage: 'en'
   };
   if (pageToken) params.pageToken = pageToken;
-  return this.request('videos', params);
+  return this.request('search', params);
 },
 
   async search(query, pageToken = '') {
