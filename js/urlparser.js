@@ -45,13 +45,18 @@ const UrlParser = {
   },
 
   getEmbedUrl(videoId) {
-    const params = new URLSearchParams({
-      autoplay: 1,
-      rel: 0,
-      modestbranding: 1,
-      playsinline: 1
-    });
-    return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
-  }
+  const params = new URLSearchParams({
+    autoplay: 1,
+    rel: 0,
+    modestbranding: 1,
+    playsinline: 1,
+    disablekb: 0,
+    iv_load_policy: 3,
+    cc_load_policy: 0,
+    controls: 1,
+    fs: 1
+  });
+  return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
+},
 
 };
