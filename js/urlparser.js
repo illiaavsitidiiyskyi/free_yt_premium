@@ -25,14 +25,38 @@ const UrlParser = {
     return null;
   },
 
-  isYoutubeUrl(text) {
-    if (!text) return false;
-    return (
-      text.includes('youtube.com') ||
-      text.includes('youtu.be')
-    );
+  getChannelInfo(url) {
+    if (!url) return null;
+    url = url.trim();
+
+    const handleMatch = url.match(/youtube\.com\/@([a-zA-Z0-9_.-]+)/);
+    if (handleMatch) return { type: 'handle', value: handleMatch[1] };
+    const channelMatch = url.match(/youtube\.com\/channel\/([a-zA-Z0-9_-]+)/);
+    if (channelMatch) return { type: 'id', value: channelMatch[1] };
+
+    const customMatch = url.match(/youtube\.com\/c\/([a-zA-Z0-9_.-]+)/);
+    if (customMatch) return { type: 'handle', value: customMatch[1] };
+
+    const userMatch = url.match(/youtube\.com\/user\/([a-zA-Z0-9_.-]+)/);
+    if (userMatch) return { type: 'handle', value: userMatch[1] };
+
+    return null;
   },
 
+  isYoutubeUrl(text) {
+    if (!text) return false;
+    return text.includes('youtube.com') || text.includes('youtu.be');
+  },
+
+  isChannelUrl(text) {
+    if (!text) return false;
+    return (
+      text.includes('youtube.com/@') ||
+      text.includes('youtube.com/channel/') ||
+      text.includes('youtube.com/c/') ||
+      text.includes('youtube.com/user/')
+    );
+  },
   getThumbnail(videoId, quality = 'hq') {
     const qualities = {
       max: 'maxresdefault',
@@ -45,18 +69,16 @@ const UrlParser = {
   },
 
   getEmbedUrl(videoId) {
-  const params = new URLSearchParams({
-    autoplay: 1,
-    rel: 0,
-    modestbranding: 1,
-    playsinline: 1,
-    disablekb: 0,
-    iv_load_policy: 3,
-    cc_load_policy: 0,
-    controls: 1,
-    fs: 1
-  });
-  return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
-},
+    const params = new URLSearchParams({
+      autoplay: 1,
+      rel: 0,
+      modestbranding: 1,
+      playsinline: 1,
+      iv_load_policy: 3,
+      controls: 1,
+      fs: 1
+    });
+    return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
+  }
 
 };

@@ -119,4 +119,45 @@ const API = {
     return `${Math.floor(diff / 31536000)} l. back `;
   }
 
+  async getChannelByHandle(handle) {
+    return this.request('channels', {
+      part: 'snippet,statistics,contentDetails',
+      forHandle: handle
+    });
+  },
+
+  async getChannelById(channelId) {
+    return this.request('channels', {
+      part: 'snippet,statistics,contentDetails',
+      id: channelId
+    });
+  },
+
+  async getChannelVideos(channelId, pageToken = '') {
+    const params = {
+      part: 'snippet',
+      channelId: channelId,
+      type: 'video',
+      order: 'date',
+      maxResults: 24
+    };
+    if (pageToken) params.pageToken = pageToken;
+    return this.request('search', params);
+  },
+
+  formatChannel(item) {
+    const snippet = item.snippet || {};
+    const stats = item.statistics || {};
+    return {
+      id: item.id,
+      name: snippet.title || '',
+      description: snippet.description || '',
+      avatar: snippet.thumbnails?.high?.url ||
+              snippet.thumbnails?.medium?.url || '',
+      subscribers: this.formatViews(stats.subscribersCount),
+      videoCount: stats.videoCount || '0',
+      uploadsPlaylistId: item.contentDetails?.relatedPlaylist?.uploads || ''
+    };
+  }
+
 };

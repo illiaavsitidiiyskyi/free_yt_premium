@@ -25,27 +25,32 @@ const Search = {
     },
 
     handle(value) {
-        value = value.trim();
-        if (!value) return;
+  value = value.trim();
+  if (!value) return;
 
-        const input = document.getElementById('search-input');
+  const input = document.getElementById('search-input');
 
-        if (UrlParser.isYoutubeUrl(value)) {
-            input.value = '';
-            Player.openByUrl(value);
-            return;
-        }
+  if (UrlParser.isChannelUrl(value)) {
+    input.value = '';
+    Channel.openByUrl(value);
+    return;
+  }
 
-        if (UrlParser.getVideoId(value)) {
-            input.value = '';
-            Player.openByUrl(value);
-            return;
-        }
+  if (UrlParser.isYoutubeUrl(value)) {
+    input.value = '';
+    Player.openByUrl(value);
+    return;
+  }
+  if (UrlParser.getVideoId(value)) {
+    input.value = '';
+    Player.openByUrl(value);
+    return;
+  }
 
-        input.value = '';
-        this.setActive('search');
-        Feed.loadSearch(value);
-    },
+  input.value = '';
+  Search.setActive('search');
+  Feed.loadSearch(value);
+},
 
     setActive(page) {
         document.querySelectorAll('.nav-item').forEach(el => {
