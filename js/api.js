@@ -8,9 +8,7 @@ const API = {
 
   async request(endpoint, params = {}) {
     const key = this.key();
-    if (!key) {
-      throw new Error('NO_API_KEY');
-    }
+    if (!key) throw new Error('NO_API_KEY');
 
     const url = new URL(`${this.BASE_URL}/${endpoint}`);
     url.searchParams.set('key', key);
@@ -21,25 +19,22 @@ const API = {
     const res = await fetch(url);
     const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.error?.message || 'API Error');
-    }
-
+    if (!res.ok) throw new Error(data.error?.message || 'API Error');
     return data;
   },
 
   async getTrending(pageToken = '') {
-  const params = {
-    part: 'snippet',
-    q: 'trending 2026',
-    type: 'video',
-    order: 'viewCount',
-    maxResults: 24,
-    relevanceLanguage: 'en'
-  };
-  if (pageToken) params.pageToken = pageToken;
-  return this.request('search', params);
-},
+    const params = {
+      part: 'snippet',
+      q: 'trending 2026',
+      type: 'video',
+      order: 'viewCount',
+      maxResults: 24,
+      relevanceLanguage: 'en'
+    };
+    if (pageToken) params.pageToken = pageToken;
+    return this.request('search', params);
+  },
 
   async search(query, pageToken = '') {
     const params = {
@@ -69,12 +64,37 @@ const API = {
     });
   },
 
+  async getChannelByHandle(handle) {
+    return this.request('channels', {
+      part: 'snippet,statistics,contentDetails',
+      forHandle: handle
+    });
+  },
+
+  async getChannelById(channelId) {
+    return this.request('channels', {
+      part: 'snippet,statistics,contentDetails',
+      id: channelId
+    });
+  },
+
+  async getChannelVideos(channelId, pageToken = '') {
+    const params = {
+      part: 'snippet',
+      channelId: channelId,
+      type: 'video',
+      order: 'date',
+      maxResults: 24
+    };
+    if (pageToken) params.pageToken = pageToken;
+    return this.request('search', params);
+  },
+
   formatVideo(item) {
     const id = item.id?.videoId || item.id;
     const snippet = item.snippet || {};
     const stats = item.statistics || {};
     const details = item.contentDetails || {};
-
     return {
       id,
       title: snippet.title || 'Untitled',
@@ -85,6 +105,21 @@ const API = {
       views: this.formatViews(stats.viewCount),
       duration: this.formatDuration(details.duration),
       publishedAt: this.formatDate(snippet.publishedAt)
+    };
+  },
+
+  formatChannel(item) {
+    const snippet = item.snippet || {};
+    const stats = item.statistics || {};
+    return {
+      id: item.id,
+      name: snippet.title || '',
+      description: snippet.description || '',
+      avatar: snippet.thumbnails?.high?.url ||
+              snippet.thumbnails?.medium?.url || '',
+      subscribers: this.formatViews(stats.subscriberCount),
+      videoCount: stats.videoCount || '0',
+      uploadsPlaylistId: item.contentDetails?.relatedPlaylists?.uploads || ''
     };
   },
 
@@ -112,52 +147,11 @@ const API = {
     const date = new Date(dateStr);
     const now = new Date();
     const diff = Math.floor((now - date) / 1000);
-    if (diff < 3600) return `${Math.floor(diff / 60)} min. back `;
+    if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
     if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-    if (diff < 2592000) return `${Math.floor(diff / 86400)} days back `;
-    if (diff < 31536000) return `${Math.floor(diff / 2592000)} months back `;
-    return `${Math.floor(diff / 31536000)} l. back `;
-  }
-
-  async getChannelByHandle(handle) {
-    return this.request('channels', {
-      part: 'snippet,statistics,contentDetails',
-      forHandle: handle
-    });
-  },
-
-  async getChannelById(channelId) {
-    return this.request('channels', {
-      part: 'snippet,statistics,contentDetails',
-      id: channelId
-    });
-  },
-
-  async getChannelVideos(channelId, pageToken = '') {
-    const params = {
-      part: 'snippet',
-      channelId: channelId,
-      type: 'video',
-      order: 'date',
-      maxResults: 24
-    };
-    if (pageToken) params.pageToken = pageToken;
-    return this.request('search', params);
-  },
-
-  formatChannel(item) {
-    const snippet = item.snippet || {};
-    const stats = item.statistics || {};
-    return {
-      id: item.id,
-      name: snippet.title || '',
-      description: snippet.description || '',
-      avatar: snippet.thumbnails?.high?.url ||
-              snippet.thumbnails?.medium?.url || '',
-      subscribers: this.formatViews(stats.subscribersCount),
-      videoCount: stats.videoCount || '0',
-      uploadsPlaylistId: item.contentDetails?.relatedPlaylist?.uploads || ''
-    };
+    if (diff < 2592000) return `${Math.floor(diff / 86400)} days ago`;
+    if (diff < 31536000) return `${Math.floor(diff / 2592000)} months ago`;
+    return `${Math.floor(diff / 31536000)} years ago`;
   }
 
 };
