@@ -32,23 +32,24 @@ const Channel = {
   },
 
   async open(channel) {
-    this.currentChannel = channel;
+  this.currentChannel = channel;
 
-    const feed = document.getElementById('feed');
-    const watchlaterView = document.getElementById('watchlater-view');
+  const feed = document.getElementById('feed');
+  const playerView = document.getElementById('player-view');
+  const watchlaterView = document.getElementById('watchlater-view');
 
-    feed.classList.add('hidden');
-    playerView.classList.add('hidden');
-    watchlaterView.classList.remove('hidden');
+  feed.classList.add('hidden');
+  playerView.classList.add('hidden');
+  watchlaterView.classList.remove('hidden');
 
-    watchlaterView.innerHTML = this.renderHeader(channel) +
-      `<div id="channel-videos">
-        <div class="loader"><div class="spinner"></div> Loading video...</div>
-      </div>`;
+  watchlaterView.innerHTML = this.renderHeader(channel) +
+    `<div id="channel-videos">
+      <div class="loader"><div class="spinner"></div> Loading video...</div>
+    </div>`;
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    await this.loadVideos(channel.id);
-  },
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  await this.loadVideos(channel.id);
+},
 
   renderHeader(channel) {
     return `
