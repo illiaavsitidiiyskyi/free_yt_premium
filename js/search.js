@@ -56,7 +56,7 @@ const Search = {
         document.querySelectorAll('.nav-item').forEach(el => {
             el.classList.remove('active');
         });
-        const item = document.querySelector(`[data-page="${page}]`)
+        const item = document.querySelector(`[data-page="${page}"]`)
         if (item) item.classList.add('active');
     }
 
