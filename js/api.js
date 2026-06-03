@@ -153,4 +153,37 @@ const API = {
     return `${Math.floor(diff / 31536000)} years ago`;
   }
 
+  async getPlaylist(playlistId) {
+    return this.request('playlists', {
+      part: 'snippet,contentDetails',
+      id: playlistId
+    });
+  },
+
+  async getPlaylistVideos(playlistId, pageToken = '') {
+    const params = {
+      part: 'snippet,contentDetails',
+      playlistId: playlistId,
+      maxResults: 24
+    };
+    if (pageToken) params.pageToken = pageToken;
+    return this.request('playlistItems', params);
+  },
+
+  formatPlaylistVideo(item) {
+    const snippet = item.snippet || {};
+    const videoId = snippet.resourceId?.videoId || '';
+    return {
+      id: videoId,
+      title: snippet.title || 'Untitled',
+      channel: snippet.channelTitle || '',
+      thumbnail: snippet.thumbnails?.high?.url ||
+                 snippet.thumbnails?.medium?.url ||
+                 UrlParser.getThumbnail(videoId),
+      views: '',
+      duration: '',
+      publishedAt: this.formatDate(snippet.publishedAt)
+    };
+  }
+
 };
