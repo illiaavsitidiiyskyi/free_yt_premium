@@ -81,4 +81,17 @@ const UrlParser = {
     return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
   }
 
+
+  isPlaylistUrl(text) {
+    if (!text) return false;
+    return text.includes('youtube.com/playlist?list=') ||
+           (text.includes('youtube.com/watch') && text.includes('list='));
+  },
+
+  getPlaylistId(url) {
+    if (!url) return null;
+    const match = url.match(/(?:list=)([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : null;
+}
+
 };

@@ -5,7 +5,6 @@ const API = {
   key() {
     return Storage.getApiKey();
   },
-
   async request(endpoint, params = {}) {
     const key = this.key();
     if (!key) throw new Error('NO_API_KEY');
