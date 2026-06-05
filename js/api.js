@@ -151,7 +151,7 @@ const API = {
     if (diff < 2592000) return `${Math.floor(diff / 86400)} days ago`;
     if (diff < 31536000) return `${Math.floor(diff / 2592000)} months ago`;
     return `${Math.floor(diff / 31536000)} years ago`;
-  }
+  },
 
   async getPlaylist(playlistId) {
     return this.request('playlists', {
