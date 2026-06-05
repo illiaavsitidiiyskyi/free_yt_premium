@@ -30,6 +30,12 @@ const Search = {
 
   const input = document.getElementById('search-input');
 
+  if (UrlParser.isPlaylistUrl(value)) {
+    input.value = '';
+    Playlist.openByUrl(value);
+    return;
+  }
+
   if (UrlParser.isChannelUrl(value)) {
     input.value = '';
     Channel.openByUrl(value);
@@ -41,6 +47,7 @@ const Search = {
     Player.openByUrl(value);
     return;
   }
+
   if (UrlParser.getVideoId(value)) {
     input.value = '';
     Player.openByUrl(value);
