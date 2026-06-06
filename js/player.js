@@ -73,8 +73,11 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
     section.innerHTML = `<div class="loader"><div class="spinner"></div> Loading...</div>`;
 
     try {
-      const data = await API.getRelated(videoId);
-      const videos = (data.items || []).map(item => API.formatVideo(item));
+      const data = await API.search(Player.currentVideo?.channel || 'trending');
+      const videos = (data.items || [])
+        .map(item => API.formatVideo(item))
+        .filter(v => v.id !== videoId)
+        .slice(0, 8);
 
       if (videos.length === 0) {
         section.innerHTML = '';
@@ -82,7 +85,7 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
       }
 
       section.innerHTML = `
-        <div class="related-title">Related videos</div>
+        <div class="related-title">More videos</div>
         <div class="related-grid">
           ${videos.map(v => Feed.renderCard(v)).join('')}
         </div>
