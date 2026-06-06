@@ -89,13 +89,15 @@ const Channel = {
 
     try {
       const data = await API.getChannelVideos(channelId, pageToken);
-      const videos = (data.items || []).map(item => API.formatVideo(item));
+      const videos = (data.items || [])
+        .map(item => API.formatPlaylistVideo(item))
+        .filter(v => v.id);
 
       if (videos.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
-            <div class="icon"></div>
-            <p>The channel has no video</p>
+            <div class="icon">📭</div>
+            <p>No videos</p>
           </div>
         `;
         return;
@@ -125,8 +127,8 @@ const Channel = {
     } catch (e) {
       container.innerHTML = `
         <div class="empty-state">
-          <div class="icon"></div>
-          <p>Error loading video</p>
+          <div class="icon">⚠️</div>
+          <p>Error loading videos</p>
         </div>
       `;
     }

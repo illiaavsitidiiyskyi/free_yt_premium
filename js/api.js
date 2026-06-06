@@ -90,14 +90,12 @@ const API = {
 
   async getChannelVideos(channelId, pageToken = '') {
     const params = {
-      part: 'snippet',
-      channelId: channelId,
-      type: 'video',
-      order: 'date',
+      part: 'snippet,contentDetails',
+      playlistId: 'UU' + channelId.slice(2),
       maxResults: 24
     };
     if (pageToken) params.pageToken = pageToken;
-    return this.request('search', params);
+    return this.request('playlistItems', params);
   },
 
   formatVideo(item) {
