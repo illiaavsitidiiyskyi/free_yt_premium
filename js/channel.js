@@ -68,17 +68,22 @@ const Channel = {
         <div class="channel-info">
           <div class="channel-name">${channel.name}</div>
           <div class="channel-stats">
-            ${channel.subscribers ? `<span> ${channel.subscribers} subscribers</span>` : ''}
-            ${channel.videoCount ? `<span> ${channel.videoCount} video</span>` : ''}
+            ${channel.subscribers ? `<span>👥 ${channel.subscribers} подписчиков</span>` : ''}
+            ${channel.videoCount ? `<span>🎬 ${channel.videoCount} видео</span>` : ''}
           </div>
           ${channel.description
             ? `<div class="channel-desc">${channel.description.slice(0, 150)}${channel.description.length > 150 ? '...' : ''}</div>`
             : ''
           }
+          <div style="margin-top: 10px">
+            <button class="player-btn" onclick="Channel.shuffle()">
+              🔀 Shuffle channel
+            </button>
+          </div>
         </div>
       </div>
       <div class="feed-title" style="margin-bottom: 16px">
-         Channel video
+        🎬 Channel video
       </div>
     `;
   },
@@ -132,6 +137,21 @@ const Channel = {
         </div>
       `;
     }
+  },
+
+  shuffle() {
+    const container = document.querySelector('#channel-videos [style*="grid"]');
+    if (!container) {
+      App.showToast('Videos still loading...', 'error');
+      return;
+    }
+    const cards = Array.from(container.children);
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+    cards.forEach(card => container.appendChild(card));
+    App.showToast('Channel shuffled', 'success');
   }
 
 };
