@@ -30,6 +30,10 @@ const Search = {
 
   const input = document.getElementById('search-input');
 
+  console.log('handle:', value);
+  console.log('isPlaylist:', UrlParser.isPlaylistUrl(value));
+  console.log('isChannel:', UrlParser.isChannelUrl(value));
+
   if (UrlParser.isPlaylistUrl(value)) {
     input.value = '';
     Playlist.openByUrl(value);
