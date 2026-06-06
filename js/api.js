@@ -47,6 +47,17 @@ const API = {
     return this.request('search', params);
   },
 
+  async searchChannels(query, pageToken = '') {
+    const params = {
+      part: 'snippet',
+      q: query,
+      type: 'channel',
+      maxResults: 6
+    };
+    if (pageToken) params.pageToken = pageToken;
+    return this.request('search', params);
+  },
+
   async getVideo(videoId) {
     return this.request('videos', {
       part: 'snippet,contentDetails,statistics',

@@ -58,15 +58,54 @@ const Feed = {
     this.currentQuery = query;
 
     feed.innerHTML = `
-      <div class="feed-title"> ${query} <span>search results</span></div>
+      <div class="feed-title">🔍 ${query} <span>search results</span></div>
       <div class="loader"><div class="spinner"></div> Search...</div>
     `;
 
     try {
-      const data = await API.search(query);
-      this.nextPageToken = data.nextPageToken || '';
-      const videos = (data.items || []).map(item => API.formatVideo(item));
-      this.renderVideos(feed, videos, true);
+      const [videosData, channelsData] = await Promise.all([
+        API.search(query),
+        API.searchChannels(query)
+      ]);
+
+      this.nextPageToken = videosData.nextPageToken || '';
+      const videos = (videosData.items || []).map(item => API.formatVideo(item));
+      const channels = (channelsData.items || []).map(item => ({
+        id: item.snippet?.channelId || item.id?.channelId,
+        name: item.snippet?.title || '',
+        avatar: item.snippet?.thumbnails?.high?.url || '',
+        description: item.snippet?.description || ''
+      })).filter(c => c.id);
+
+      const titleHtml = `<div class="feed-title">🔍 ${query} <span>search results</span></div>`;
+
+      let channelsHtml = '';
+      if (channels.length > 0) {
+        channelsHtml = `
+          <div class="search-channels">
+            <div class="search-section-title">Channels</div>
+            <div class="channels-row">
+              ${channels.map(c => `
+                <div class="channel-chip" onclick="Channel.open(${JSON.stringify(c).replace(/"/g, '&quot;')})">
+                  <div class="channel-chip-avatar">
+                    ${c.avatar
+                      ? `<img src="${c.avatar}" alt="${c.name}">`
+                      : `<div class="channel-chip-placeholder">${c.name[0]}</div>`
+                    }
+                  </div>
+                  <div class="channel-chip-name">${c.name}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      const videosHtml = videos.map(v => this.renderCard(v)).join('');
+      const loadMoreHtml = this.nextPageToken ? this.renderLoadMoreBtn() : '';
+
+      feed.innerHTML = titleHtml + channelsHtml + videosHtml + loadMoreHtml;
+
     } catch (e) {
       this.renderError(feed, e.message);
     }
