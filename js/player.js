@@ -19,16 +19,15 @@ const Player = {
     this.updateWatchLaterBtn(video.id);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    this.initPlaylistAutoplay();
   },
 
   renderPlayer(video) {
-    const playlistIndex = (Playlist.currentVideos || []).findIndex(v => v.id === video.id);
-const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, playlistIndex);
+    const embedUrl = UrlParser.getEmbedUrl(video.id);
     const inWL = Storage.isInWatchLater(video.id);
-
-    const playlistVideos = Playlist.currentVideos || [];
-    const otherVideos = playlistVideos.filter(v => v.id !== video.id);
+    const hasPlaylist = Playlist.currentVideos && Playlist.currentVideos.length > 0;
+    const otherVideos = hasPlaylist
+      ? Playlist.currentVideos.filter(v => v.id !== video.id)
+      : [];
 
     return `
       <div class="player-wrapper">
@@ -49,18 +48,18 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
           </div>
         </div>
         <div class="player-actions">
-  <button class="player-btn ${inWL ? 'saved' : ''}" id="wl-btn" onclick="Player.toggleWatchLater()">
-    ${inWL ? '✓ In list' : '🕐 Watch later'}
-  </button>
-  <button class="player-btn" onclick="Player.copyLink()">
-    🔗 Copy link
-  </button>
-  ${(Playlist.currentVideos || []).length > 0 ? `
-  <button class="player-btn" onclick="Player.playNext()">
-    ⏭ Next
-  </button>
-  ` : ''}
-</div>
+          <button class="player-btn ${inWL ? 'saved' : ''}" id="wl-btn" onclick="Player.toggleWatchLater()">
+            ${inWL ? '✓ In list' : '🕐 Watch later'}
+          </button>
+          <button class="player-btn" onclick="Player.copyLink()">
+            🔗 Copy link
+          </button>
+          ${hasPlaylist ? `
+          <button class="player-btn" onclick="Player.playNext()">
+            ⏭ Next
+          </button>
+          ` : ''}
+        </div>
       </div>
 
       ${otherVideos.length > 0 ? `
@@ -108,12 +107,12 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
 
     if (inWL) {
       Storage.removeFromWatchLater(this.currentVideo.id);
-      btn.textContent = ' Watch later';
+      btn.textContent = '🕐 Watch later';
       btn.classList.remove('saved');
-      App.showToast('Removed from the list');
+      App.showToast('Removed from list');
     } else {
       Storage.addToWatchLater(this.currentVideo);
-      btn.textContent = 'On the list';
+      btn.textContent = '✓ In list';
       btn.classList.add('saved');
       App.showToast('Added to watch later', 'success');
     }
@@ -125,7 +124,7 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
     const btn = document.getElementById('wl-btn');
     if (!btn) return;
     const inWL = Storage.isInWatchLater(videoId);
-    btn.textContent = inWL ? 'On the list' : 'Watch later';
+    btn.textContent = inWL ? '✓ In list' : '🕐 Watch later';
     btn.classList.toggle('saved', inWL);
   },
 
@@ -135,6 +134,19 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
     navigator.clipboard.writeText(url).then(() => {
       App.showToast('Link copied', 'success');
     });
+  },
+
+  playNext() {
+    const videos = Playlist.currentVideos;
+    if (!videos || videos.length === 0) return;
+
+    const currentIndex = videos.findIndex(v => v.id === this.currentVideo?.id);
+    const nextIndex = (currentIndex + 1) % videos.length;
+    const nextVideo = videos[nextIndex];
+
+    if (nextVideo) {
+      this.open(nextVideo);
+    }
   },
 
   async openByUrl(url) {
@@ -173,31 +185,6 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
         publishedAt: ''
       });
     }
-  },
-
-  initPlaylistAutoplay() {
-    window.addEventListener('message', (event) => {
-      if (event.origin !== 'https://www.youtube-nocookie.com') return;
-      try {
-        const data = JSON.parse(event.data);
-        if (data.event === 'onStateChange' && data.info === 0) {
-          this.playNext();
-        }
-      } catch (e) {}
-    });
-  },
-
-  playNext() {
-    const videos = Playlist.currentVideos;
-    if (!videos || videos.length === 0) return;
-
-    const currentIndex = videos.findIndex(v => v.id === this.currentVideo?.id);
-    const nextIndex = (currentIndex + 1) % videos.length;
-    const nextVideo = videos[nextIndex];
-
-    if (nextVideo) {
-      this.open(nextVideo);
-    }
-  },
+  }
 
 };
