@@ -4,21 +4,19 @@ const Playlist = {
 
   async openByUrl(url) {
     const playlistId = UrlParser.getPlaylistId(url);
+    alert('playlistId: ' + playlistId);
     if (!playlistId) {
       App.showToast('Invalid playlist link', 'error');
       return;
     }
-
     App.showToast('Loading playlist...');
-
     try {
       const data = await API.getPlaylist(playlistId);
-
+      alert('items: ' + (data.items ? data.items.length : 'none'));
       if (!data.items || data.items.length === 0) {
         App.showToast('Playlist not found', 'error');
         return;
       }
-
       const item = data.items[0];
       const playlist = {
         id: playlistId,
@@ -27,9 +25,9 @@ const Playlist = {
         thumbnail: item.snippet?.thumbnails?.high?.url || '',
         videoCount: item.contentDetails?.itemCount || 0
       };
-
       this.open(playlist);
     } catch (e) {
+      alert('error: ' + e.message);
       App.showToast('Error loading playlist', 'error');
     }
   },
