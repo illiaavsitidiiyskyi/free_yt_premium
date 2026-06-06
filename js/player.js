@@ -187,7 +187,8 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
     if (!videos || videos.length === 0) return;
 
     const currentIndex = videos.findIndex(v => v.id === this.currentVideo?.id);
-    const nextIndex = videos[nextIndex];
+    const nextIndex = (currentIndex + 1) % videos.length;
+    const nextVideo = videos[nextIndex];
 
     if (nextVideo) {
       this.open(nextVideo);
