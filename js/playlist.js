@@ -80,7 +80,8 @@ const Playlist = {
     if (!container) return;
 
     try {
-      const data = await API.getPlaylistVideos(playlistId, pageToken);
+      const data = await API.getPlaylist(playlistId);
+alert('items: ' + (data.items ? data.items.length : 'none') + ' error: ' + JSON.stringify(data.error));
       const videos = (data.items || [])
         .map(item => API.formatPlaylistVideo(item))
         .filter(v => v.id);
