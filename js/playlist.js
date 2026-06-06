@@ -70,6 +70,13 @@ const Playlist = {
       const videos = (data.items || [])
         .map(item => API.formatPlaylistVideo(item))
         .filter(v => v.id);
+
+      if (!pageToken) {
+        this.currentVideos = videos;
+      } else {
+        this.currentVideos = [...(this.currentVideos || []), ...videos];
+      }
+
       if (videos.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
@@ -79,6 +86,7 @@ const Playlist = {
         `;
         return;
       }
+
       const grid = `
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px">
           ${videos.map(v => Feed.renderCard(v)).join('')}
@@ -92,6 +100,7 @@ const Playlist = {
           </div>
         ` : ''}
       `;
+
       if (pageToken) {
         const loadMore = document.getElementById('load-more');
         if (loadMore) loadMore.remove();

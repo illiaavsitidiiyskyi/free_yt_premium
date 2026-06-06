@@ -129,13 +129,14 @@ const Feed = {
 
   renderCard(video) {
     const inWL = Storage.isInWatchLater(video.id);
+    const videoJson = JSON.stringify(video).replace(/"/g, '&quot;');
     return `
-      <div class="video-card" onclick="Player.open(${JSON.stringify(video).replace(/"/g, '&quot;')})">
+      <div class="video-card" onclick="Player.open(${videoJson})">
         <div class="video-thumb">
           <img src="${video.thumbnail}" alt="${video.title}" loading="lazy">
           ${video.duration ? `<div class="video-duration">${video.duration}</div>` : ''}
           <button class="card-wl-btn ${inWL ? 'saved' : ''}"
-            onclick="event.stopPropagation(); WatchLater.toggleFromCard(${JSON.stringify(video).replace(/"/g, '&quot;')})"
+            onclick="event.stopPropagation(); WatchLater.toggleFromCard(${videoJson})"
             title="Watch later">
             ${inWL ? '✓' : '+'}
           </button>

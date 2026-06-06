@@ -25,6 +25,9 @@ const Player = {
     const embedUrl = UrlParser.getEmbedUrl(video.id);
     const inWL = Storage.isInWatchLater(video.id);
 
+    const playlistVideos = Playlist.currentVideos || [];
+    const otherVideos = playlistVideos.filter(v => v.id !== video.id);
+
     return `
       <div class="player-wrapper">
         <iframe
@@ -45,15 +48,20 @@ const Player = {
         </div>
         <div class="player-actions">
           <button class="player-btn ${inWL ? 'saved' : ''}" id="wl-btn" onclick="Player.toggleWatchLater()">
-            ${inWL ? 'On the list ' : 'Watch later'}
+            ${inWL ? '✓ In list' : '🕐 Watch later'}
           </button>
           <button class="player-btn" onclick="Player.copyLink()">
-             Copy link
+            🔗 Copy link
           </button>
         </div>
       </div>
 
-      <div id="related-section"></div>
+      ${otherVideos.length > 0 ? `
+        <div class="related-title">▶ From playlist</div>
+        <div class="related-grid">
+          ${otherVideos.map(v => Feed.renderCard(v)).join('')}
+        </div>
+      ` : '<div id="related-section"></div>'}
     `;
   },
 
