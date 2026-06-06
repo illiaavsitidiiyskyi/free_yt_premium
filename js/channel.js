@@ -124,19 +124,47 @@ const Channel = {
     }
   },
 
-  shuffle() {
-    const container = document.querySelector('#channel-videos [style*="grid"]');
-    if (!container) {
-      App.showToast('Videos still loading...', 'error');
-      return;
+  async shuffle() {
+    const btn = document.querySelector('.channel-info .player-btn');
+    if (btn) btn.textContent = '⏳ Loading...';
+
+    App.showToast('Loading all videos...');
+
+    const channelId = this.currentChannel?.id;
+    if (!channelId) return;
+
+    let allVideos = [];
+    let pageToken = '';
+
+    try {
+      do {
+        const data = await API.getChannelVideos(channelId, pageToken);
+        const videos = (data.items || [])
+          .map(item => API.formatPlaylistVideo(item))
+          .filter(v => v.id);
+        allVideos = [...allVideos, ...videos];
+        pageToken = data.nextPageToken || '';
+      } while (pageToken);
+
+      for (let i = allVideos.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allVideos[i], allVideos[j]] = [allVideos[j], allVideos[i]];
+      }
+
+      const container = document.getElementById('channel-videos');
+      if (container) {
+        container.innerHTML = `
+          <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px">
+            ${allVideos.map(v => Feed.renderCard(v)).join('')}
+          </div>
+        `;
+      }
+
+      App.showToast(`Shuffled ${allVideos.length} videos 🔀`, 'success');
+    } catch (e) {
+      App.showToast('Error loading videos', 'error');
+      if (btn) btn.textContent = '🔀 Shuffle';
     }
-    const cards = Array.from(container.children);
-    for (let i = cards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [cards[i], cards[j]] = [cards[j], cards[i]];
-    }
-    cards.forEach(card => container.appendChild(card));
-    App.showToast('Channel shuffled 🔀', 'success');
   }
 
 };
