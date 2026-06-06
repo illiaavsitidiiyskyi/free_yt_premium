@@ -57,6 +57,11 @@ const Playlist = {
             ${playlist.channel ? `<span>📺 ${playlist.channel}</span>` : ''}
             ${playlist.videoCount ? `<span>🎬 ${playlist.videoCount} videos</span>` : ''}
           </div>
+          <div style="margin-top: 10px">
+            <button class="player-btn" onclick="Playlist.shuffle()">
+              🔀 Shuffle
+            </button>
+          </div>
         </div>
       </div>
       <div class="feed-title" style="margin-bottom: 16px">
@@ -113,6 +118,19 @@ const Playlist = {
         </div>
       `;
     }
-  }
+  },
+
+  shuffle() {
+    const container = document.querySelector('#watchlater-view [style*="grid"]');
+    if (!container) return;
+
+    const cards = Array.from(container.children);
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      container.appendChild(cards[j]);
+      cards.splice(j, 1);
+    }
+
+    App.showToast('Playlist shuffled', 'success');
 
 };
