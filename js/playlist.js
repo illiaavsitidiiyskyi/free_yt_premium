@@ -53,10 +53,11 @@ const Playlist = {
         </div>
         <div class="channel-info">
           <div class="channel-name">${playlist.title}</div>
+          ${playlist.channel || playlist.videoCount ? `
           <div class="channel-stats">
             ${playlist.channel ? `<span>📺 ${playlist.channel}</span>` : ''}
             ${playlist.videoCount ? `<span>🎬 ${playlist.videoCount} videos</span>` : ''}
-          </div>
+          </div>` : ''}
           <div style="margin-top: 10px">
             <button class="player-btn" onclick="Playlist.shuffle()">
               🔀 Shuffle
@@ -133,4 +134,5 @@ const Playlist = {
 
     App.showToast('Playlist shuffled', 'success');
 
-};
+},
+  }
