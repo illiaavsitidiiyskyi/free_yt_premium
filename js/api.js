@@ -23,9 +23,19 @@ const API = {
   },
 
   async getTrending(pageToken = '') {
+    const topics = [
+      'music', 'gaming', 'sports', 'news', 'comedy', 'science',
+      'technology', 'travel', 'food', 'fitness', 'movies', 'animals',
+      'history', 'art', 'education', 'nature', 'cars', 'space',
+      'fashion', 'cooking', 'boxing', 'soccer', 'basketball', 'tennis',
+      'rock music', 'hip hop', 'jazz', 'electronic music', 'pop music',
+      'documentary', 'animation', 'diy', 'photography', 'architecture',
+      'metallica', 'programming'
+    ];
+    const q = topics[Math.floor(Math.random() * topics.length)] + ' 2026';
     const params = {
       part: 'snippet',
-      q: 'trending 2026',
+      q,
       type: 'video',
       order: 'viewCount',
       maxResults: 24,
