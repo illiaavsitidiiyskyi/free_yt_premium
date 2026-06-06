@@ -1,5 +1,4 @@
 const Playlist = {
-
   currentPlaylist: null,
 
   async openByUrl(url) {
@@ -8,9 +7,7 @@ const Playlist = {
       App.showToast('Invalid playlist link', 'error');
       return;
     }
-
     App.showToast('Loading playlist...');
-
     const playlist = {
       id: playlistId,
       title: 'Playlist',
@@ -18,26 +15,21 @@ const Playlist = {
       thumbnail: '',
       videoCount: ''
     };
-
     this.open(playlist);
   },
 
   async open(playlist) {
     this.currentPlaylist = playlist;
-
     const feed = document.getElementById('feed');
     const playerView = document.getElementById('player-view');
     const watchlaterView = document.getElementById('watchlater-view');
-
     feed.classList.add('hidden');
     playerView.classList.add('hidden');
     watchlaterView.classList.remove('hidden');
-
     watchlaterView.innerHTML = this.renderHeader(playlist) +
       `<div id="playlist-videos">
         <div class="loader"><div class="spinner"></div> Loading videos...</div>
       </div>`;
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
     await this.loadVideos(playlist.id);
   },
@@ -53,11 +45,10 @@ const Playlist = {
         </div>
         <div class="channel-info">
           <div class="channel-name">${playlist.title}</div>
-          ${playlist.channel || playlist.videoCount ? `
           <div class="channel-stats">
             ${playlist.channel ? `<span>📺 ${playlist.channel}</span>` : ''}
             ${playlist.videoCount ? `<span>🎬 ${playlist.videoCount} videos</span>` : ''}
-          </div>` : ''}
+          </div>
           <div style="margin-top: 10px">
             <button class="player-btn" onclick="Playlist.shuffle()">
               🔀 Shuffle
@@ -79,7 +70,6 @@ const Playlist = {
       const videos = (data.items || [])
         .map(item => API.formatPlaylistVideo(item))
         .filter(v => v.id);
-
       if (videos.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
@@ -89,7 +79,6 @@ const Playlist = {
         `;
         return;
       }
-
       const grid = `
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px">
           ${videos.map(v => Feed.renderCard(v)).join('')}
@@ -103,7 +92,6 @@ const Playlist = {
           </div>
         ` : ''}
       `;
-
       if (pageToken) {
         const loadMore = document.getElementById('load-more');
         if (loadMore) loadMore.remove();
@@ -124,15 +112,13 @@ const Playlist = {
   shuffle() {
     const container = document.querySelector('#watchlater-view [style*="grid"]');
     if (!container) return;
-
     const cards = Array.from(container.children);
     for (let i = cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       container.appendChild(cards[j]);
       cards.splice(j, 1);
     }
-
-    App.showToast('Playlist shuffled', 'success');
-
-},
+    App.showToast('Playlist shuffled 🔀', 'success');
   }
+
+};
