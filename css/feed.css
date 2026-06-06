@@ -301,3 +301,9 @@
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
+
+.feed-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
