@@ -49,13 +49,18 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
           </div>
         </div>
         <div class="player-actions">
-          <button class="player-btn ${inWL ? 'saved' : ''}" id="wl-btn" onclick="Player.toggleWatchLater()">
-            ${inWL ? '✓ In list' : '🕐 Watch later'}
-          </button>
-          <button class="player-btn" onclick="Player.copyLink()">
-            🔗 Copy link
-          </button>
-        </div>
+  <button class="player-btn ${inWL ? 'saved' : ''}" id="wl-btn" onclick="Player.toggleWatchLater()">
+    ${inWL ? '✓ In list' : '🕐 Watch later'}
+  </button>
+  <button class="player-btn" onclick="Player.copyLink()">
+    🔗 Copy link
+  </button>
+  ${(Playlist.currentVideos || []).length > 0 ? `
+  <button class="player-btn" onclick="Player.playNext()">
+    ⏭ Next
+  </button>
+  ` : ''}
+</div>
       </div>
 
       ${otherVideos.length > 0 ? `
