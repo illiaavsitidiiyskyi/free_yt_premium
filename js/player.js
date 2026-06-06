@@ -19,6 +19,7 @@ const Player = {
     this.updateWatchLaterBtn(video.id);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.initPlaylistAutoplay();
   },
 
   renderPlayer(video) {
@@ -167,6 +168,30 @@ const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, p
         publishedAt: ''
       });
     }
-  }
+  },
+
+  initPlaylistAutoplay() {
+    window.addEventListener('message', (event) => {
+      if (event.origin !== 'https://www.youtube-nocookie.com') return;
+      try {
+        const data = JSON.parse(event.data);
+        if (data.event === 'onStateChange' && data.info === 0) {
+          this.playNext();
+        }
+      } catch (e) {}
+    });
+  },
+
+  playNext() {
+    const videos = Playlist.currentVideos;
+    if (!videos || videos.length === 0) return;
+
+    const currentIndex = videos.findIndex(v => v.id === this.currentVideo?.id);
+    const nextIndex = videos[nextIndex];
+
+    if (nextVideo) {
+      this.open(nextVideo);
+    }
+  },
 
 };
