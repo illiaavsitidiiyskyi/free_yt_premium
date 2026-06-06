@@ -22,7 +22,8 @@ const Player = {
   },
 
   renderPlayer(video) {
-    const embedUrl = UrlParser.getEmbedUrl(video.id);
+    const playlistIndex = (Playlist.currentVideos || []).findIndex(v => v.id === video.id);
+const embedUrl = UrlParser.getEmbedUrl(video.id, Playlist.currentPlaylist?.id, playlistIndex);
     const inWL = Storage.isInWatchLater(video.id);
 
     const playlistVideos = Playlist.currentVideos || [];

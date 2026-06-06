@@ -70,7 +70,7 @@ const UrlParser = {
     return `https://i.ytimg.com/vi/${videoId}/${q}.jpg`;
   },
 
-  getEmbedUrl(videoId) {
+  getEmbedUrl(videoId, playlistId = null, index = 0) {
     const params = new URLSearchParams({
       autoplay: 1,
       rel: 0,
@@ -80,6 +80,12 @@ const UrlParser = {
       controls: 1,
       fs: 1
     });
+
+    if (playlistId) {
+      params.set('list', playlistId);
+      params.set('index', index);
+    }
+
     return `https://www.youtube-nocookie.com/embed/${videoId}?${params}`;
   }
 
