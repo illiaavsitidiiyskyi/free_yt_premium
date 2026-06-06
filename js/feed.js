@@ -17,7 +17,11 @@ const Feed = {
     this.currentQuery = '';
 
     feed.innerHTML = `
-      <div class="feed-title"> Trending <span>popular now</span></div>
+      <div class="feed-title"> Trending <span>popular now</span>
+        <button class="btn-secondary" onclick="Feed.loadHome()" style="margin-left:auto; font-size:12px; padding:4px 12px">
+          🔄 Refresh
+        </button>
+      </div>
       <div class="loader"><div class="spinner"></div> Loading...</div>
     `;
 
