@@ -15,13 +15,13 @@ const Search = {
         });
 
         input.addEventListener('paste', (e) => {
-            setTimeout(() => {
-                const text = input.value.trim();
-                if (UrlParser.isYoutubeUrl(text)) {
-                    this.handle(text);
-                }
-            }, 50);
-        });
+    setTimeout(() => {
+        const text = input.value.trim();
+        if (text) {
+            this.handle(text);
+        }
+    }, 50);
+});
     },
 
     handle(value) {
