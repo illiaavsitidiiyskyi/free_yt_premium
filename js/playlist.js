@@ -119,14 +119,20 @@ const Playlist = {
   },
 
   shuffle() {
-    const container = document.querySelector('#watchlater-view [style*="grid"]');
-    if (!container) return;
-    const cards = Array.from(container.children);
-    for (let i = cards.length - 1; i > 0; i--) {
+    if (!this.currentVideos || this.currentVideos.length === 0) return;
+
+    const videos = [...this.currentVideos];
+    for (let i = videos.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      container.appendChild(cards[j]);
-      cards.splice(j, 1);
+      [videos[i], videos[j]] = [videos[j], videos[i]];
     }
+    this.currentVideos = videos;
+
+    const container = document.querySelector('#watchlater-view [style*="grid"]');
+    if (container) {
+      container.innerHTML = videos.map(v => Feed.renderCard(v)).join('');
+    }
+
     App.showToast('Playlist shuffled 🔀', 'success');
   }
 
