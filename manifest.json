@@ -1,0 +1,23 @@
+{
+    "name": "YTFREE",
+    "short_name": "YTFREE",
+    "description": "YouTube without ads",
+    "start_url": "/free_yt_premium/",
+    "scope": "/free_yt_premium",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#ff2d2d",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "assets/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
