@@ -8,23 +8,15 @@ const Account = {
     let pageToken = '';
 
     do {
-      const params = new URLSearchParams({
-        part: 'snippet',
-        mine: 'true',
-        maxResults: 50,
-        order: 'alphabetical'
-      });
-      if (pageToken) params.set('pageToken', pageToken);
+      let url = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&maxResults=50&order=alphabetical`;
+      if (pageToken) url += `&pageToken=${pageToken}`;
 
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/subscriptions?${params}`, {
+      const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
 
-      if (data.error) {
-        console.error('Subscriptions error:', JSON.stringify(data.error));
-        throw new Error(data.error.message);
-      }
+      if (data.error) throw new Error(data.error.message);
 
       const subs = (data.items || []).map(item => ({
         id: item.snippet.resourceId.channelId,
@@ -48,22 +40,15 @@ const Account = {
     let pageToken = '';
 
     do {
-      const params = new URLSearchParams({
-        part: 'snippet,contentDetails',
-        mine: 'true',
-        maxResults: 50
-      });
-      if (pageToken) params.set('pageToken', pageToken);
+      let url = `https://www.googleapis.com/youtube/v3/playlists?part=snippet,contentDetails&mine=true&maxResults=50`;
+      if (pageToken) url += `&pageToken=${pageToken}`;
 
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/playlists?${params}`, {
+      const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
 
-      if (data.error) {
-        console.error('Playlists error:', JSON.stringify(data.error));
-        throw new Error(data.error.message);
-      }
+      if (data.error) throw new Error(data.error.message);
 
       const playlists = (data.items || []).map(item => ({
         id: item.id,
